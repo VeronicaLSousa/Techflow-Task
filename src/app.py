@@ -1,43 +1,61 @@
 # Arquivo principal da aplicação
 
+# app.py
+# Camada de controle (API REST)
+
 from flask import Flask, jsonify, request
-from services import TaskService
+import services
 
 app = Flask(__name__)
-service = TaskService()
 
-@app.route("/")
-def home():
-    return {"message": "TechFlow Task Manager API"}
 
 @app.route("/tasks", methods=["GET"])
-def get_tasks():
-    tasks = service.list_tasks()
-    return jsonify([task.__dict__ for task in tasks])
+def list_tasks():
+    tasks = services.get_all_tasks()
+    return jsonify(tasks), 200
+
 
 @app.route("/tasks", methods=["POST"])
 def create_task():
     data = request.get_json()
-    title = data.get("title")
-    task = service.create_task(title)
-    return jsonify(task.__dict__), 201
+
+    if not data or "title" not in data or "priority" not in data:
+        return jsonify({"error": "Dados inválidos"}), 400
+
+    task = services.create_task(
+        title=data["title"],
+        priority=data["priority"]
+    )
+
+    return jsonify(task), 201
+
 
 @app.route("/tasks/<int:task_id>", methods=["PUT"])
 def update_task(task_id):
     data = request.get_json()
-    status = data.get("status")
-    task = service.update_task(task_id, status)
-    if task:
-        return jsonify(task.__dict__)
-    return {"error": "Tarefa não encontrada"}, 404
+
+    task = services.update_task(
+        task_id,
+        title=data.get("title"),
+        priority=data.get("priority"),
+        status=data.get("status")
+    )
+
+    if not task:
+        return jsonify({"error": "Tarefa não encontrada"}), 404
+
+    return jsonify(task), 200
+
 
 @app.route("/tasks/<int:task_id>", methods=["DELETE"])
 def delete_task(task_id):
-    if service.delete_task(task_id):
-        return {"message": "Tarefa removida"}
-    return {"error": "Tarefa não encontrada"}, 404
+    success = services.delete_task(task_id)
+
+    if not success:
+        return jsonify({"error": "Tarefa não encontrada"}), 404
+
+    return jsonify({"message": "Tarefa removida com sucesso"}), 200
+
 
 if __name__ == "__main__":
     app.run(debug=True)
-
-

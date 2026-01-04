@@ -3,77 +3,63 @@
 from models import Task
 
 
-class TaskService:
-    """
-    Classe responsável pela regra de negócio do gerenciamento de tarefas.
-    Implementa as operações CRUD (Create, Read, Update, Delete).
-    """
+tasks = []
+current_id = 1
 
-    def __init__(self):
-        self.tasks = []
-        self.next_id = 1
 
-    def create_task(self, title):
-        """
-        Cria uma nova tarefa.
-        :param title: título da tarefa
-        :return: objeto Task ou None se título inválido
-        """
-        if not title or not isinstance(title, str):
-            return None
+def get_all_tasks():
+    """Retorna todas as tarefas"""
+    return tasks
 
-        task = Task(
-            id=self.next_id,
-            title=title.strip(),
-            status="A Fazer"
-        )
 
-        self.tasks.append(task)
-        self.next_id += 1
-        return task
+def create_task(title, priority):
+    """Cria uma nova tarefa"""
+    global current_id
 
-    def list_tasks(self):
-        """
-        Retorna a lista de tarefas cadastradas.
-        """
-        return self.tasks
+    task = {
+        "id": current_id,
+        "title": title,
+        "priority": priority,
+        "status": "A Fazer"
+    }
 
-    def get_task_by_id(self, task_id):
-        """
-        Busca uma tarefa pelo ID.
-        :param task_id: ID da tarefa
-        :return: Task ou None
-        """
-        for task in self.tasks:
-            if task.id == task_id:
-                return task
+    tasks.append(task)
+    current_id += 1
+    return task
+
+
+def get_task_by_id(task_id):
+    """Busca uma tarefa pelo ID"""
+    for task in tasks:
+        if task["id"] == task_id:
+            return task
+    return None
+
+
+def update_task(task_id, title=None, priority=None, status=None):
+    """Atualiza uma tarefa existente"""
+    task = get_task_by_id(task_id)
+
+    if not task:
         return None
 
-    def update_task(self, task_id, status):
-        """
-        Atualiza o status de uma tarefa existente.
-        :param task_id: ID da tarefa
-        :param status: novo status
-        :return: Task atualizada ou None se não encontrada
-        """
-        task = self.get_task_by_id(task_id)
+    if title:
+        task["title"] = title
+    if priority:
+        task["priority"] = priority
+    if status:
+        task["status"] = status
 
-        if not task or not status:
-            return None
+    return task
 
-        task.status = status.strip()
-        return task
 
-    def delete_task(self, task_id):
-        """
-        Remove uma tarefa pelo ID.
-        :param task_id: ID da tarefa
-        :return: True se removida, False caso contrário
-        """
-        task = self.get_task_by_id(task_id)
+def delete_task(task_id):
+    """Remove uma tarefa"""
+    global tasks
+    task = get_task_by_id(task_id)
 
-        if not task:
-            return False
+    if not task:
+        return False
 
-        self.tasks.remove(task)
-        return True
+    tasks = [t for t in tasks if t["id"] != task_id]
+    return True
