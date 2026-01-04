@@ -4,16 +4,16 @@
 # Camada de controle (API REST)
 
 from flask import Flask, jsonify, request
-import services
+from src import services
 
 app = Flask(__name__)
 
 
 @app.route("/tasks", methods=["GET"])
 def list_tasks():
-    tasks = services.get_all_tasks()
-    return jsonify(tasks), 200
-
+    status_filter = request.args.get("status")  # Novo parâmetro
+    tasks_list = services.get_all_tasks(status=status_filter)
+    return jsonify(tasks_list), 200
 
 @app.route("/tasks", methods=["POST"])
 def create_task():
@@ -30,9 +30,12 @@ def create_task():
     return jsonify(task), 201
 
 
-@app.route("/tasks/<int:task_id>", methods=["PUT"])
+@app.route("/tasks/<int:task_id>", methods=["PUT", "PATCH"])
 def update_task(task_id):
     data = request.get_json()
+
+    if not data:
+        return jsonify({"error": "Dados inválidos"}), 400
 
     task = services.update_task(
         task_id,

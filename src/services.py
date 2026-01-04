@@ -7,8 +7,9 @@ tasks = []
 current_id = 1
 
 
-def get_all_tasks():
-    """Retorna todas as tarefas"""
+def get_all_tasks(status=None):
+    if status:
+        return [task for task in tasks if task["status"] == status]
     return tasks
 
 
