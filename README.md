@@ -93,7 +93,8 @@ Novo card criado no Kanban: “Adicionar filtro de tarefas por status”
 Implementação: Ajuste no endpoint GET /tasks para aceitar parâmetro status Atualização da função get_all_tasks em services.py Teste unitário criado para verificar o filtro
 Commit correspondente: feat: adicionar filtro de tarefas por status no endpoint GET /tasks
 
-<img width="567" height="254" alt="workflows" src="https://github.com/user-attachments/assets/6aa0d374-e0d0-4c75-b797-df3c11133897" />
-<img width="567" height="276" alt="tabela kanban" src="https://github.com/user-attachments/assets/29674b4a-b3b8-4964-b530-54379220923b" />
+<img width="1919" height="935" alt="kanban" src="https://github.com/user-attachments/assets/d07d02dd-64b4-409b-8f41-ba660889e573" />
 <img width="1895" height="923" alt="commits" src="https://github.com/user-attachments/assets/f4a4ab1d-9267-4213-894e-c21fc2b985da" />
+<img width="1902" height="853" alt="workflows" src="https://github.com/user-attachments/assets/0e870d38-8a27-4ace-9cc4-f03748725dcf" />
+
 
