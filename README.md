@@ -95,3 +95,5 @@ Commit correspondente: feat: adicionar filtro de tarefas por status no endpoint 
 
 <img width="567" height="254" alt="workflows" src="https://github.com/user-attachments/assets/6aa0d374-e0d0-4c75-b797-df3c11133897" />
 <img width="567" height="276" alt="tabela kanban" src="https://github.com/user-attachments/assets/29674b4a-b3b8-4964-b530-54379220923b" />
+<img width="1895" height="923" alt="commits" src="https://github.com/user-attachments/assets/f4a4ab1d-9267-4213-894e-c21fc2b985da" />
+
